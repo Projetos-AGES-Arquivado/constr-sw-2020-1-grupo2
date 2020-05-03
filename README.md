@@ -35,3 +35,5 @@ $ cd opt/jboss/keycloak/bin
 $ ./kcadm.sh update realms/newrealm -s sslRequired=NONE
 ```
 #### Modelagem do CRUD de Reservas
+
+<img src="backend/reserve/Images/ReserveDiagram.png" width="450">
