@@ -2,6 +2,21 @@ version: "3.6"
 
 services:
 
+  reserve_app:
+    environment: 
+      - MONGO_URI=${RESERVE_APP_MONGO_URI}
+    build:
+      context: ./backend/reserve/app
+      dockerfile: build/dev/Dockerfile
+    volumes:
+      - ./backend/reserve/app/src/:/home/node/app
+    ports:
+      - 3457:4000
+    depends_on:
+      - reserve_mongo
+    networks:
+      - constrsw
+
   reserve_mongo:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${RESERVE_MONGO_ROOT_USERNAME}
