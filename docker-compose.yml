@@ -2,6 +2,26 @@ version: "3.6"
 
 services:
 
+  reserve_mongo:
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${RESERVE_MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${RESERVE_MONGO_ROOT_PASSWORD}
+      - APP_MONGO_HOST=${RESERVE_MONGO_HOST}
+      - MONGO_PORT=${RESERVE_MONGO_PORT}
+      - MONGO_ROOT_USER=${RESERVE_MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASS=${RESERVE_MONGO_ROOT_PASSWORD}
+      - APP_MONGO_USER=${APP_RESERVE_MONGO_USER}
+      - APP_MONGO_PASS=${APP_RESERVE_MONGO_PASS}
+      - APP_MONGO_DB=${APP_RESERVE_MONGO_DB}
+    container_name: reserve_mongo
+    build: ./backend/reserve/mongo
+    ports:
+      - "${RESERVE_MONGO_PORT}:27017"
+    volumes:
+      - constrsw-pgdata:${DB_RESERVE_MONGO_DATA}:rw
+    networks:
+      - constrsw
+
   auth:
     build:
       context: ./backend/auth
