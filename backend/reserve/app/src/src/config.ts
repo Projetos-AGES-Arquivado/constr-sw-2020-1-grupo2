@@ -2,12 +2,12 @@
 
 export default {
   development: {
-    db_url: process.env.MONGO_URI,
+    db_url: "mongodb://localhost:27017/mongo_db",
   },
   homolog: {
-    db_url: process.env.MONGO_URI,
+    db_url: "mongodb://localhost:27017/mongo_db",
   },
   prod: {
-    db_url: "",
+    db_url: "mongodb://localhost:27017/mongo_db",
   },
 };

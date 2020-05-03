@@ -962,7 +962,7 @@
         "signature": "11abd811142c02f10ba85e76b4e8dedd448e2e0a21c7a7b4d428654c68e6905c"
       },
       "../src/config.ts": {
-        "version": "33594e310aa4a30e05b87b68652d3646943b9d0dbef4b77985a9c6c9cb43d28d",
+        "version": "785c3b529e5e5d41f45cccf4eb50534d828abed93700f466d9f64d6ba9472a02",
         "signature": "051810daa613f184062ee3ce55654cc5154a611580e093d3481060d9e1dd3f9d"
       },
       "../src/env.ts": {
