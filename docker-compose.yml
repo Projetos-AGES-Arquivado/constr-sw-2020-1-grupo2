@@ -3,14 +3,17 @@ version: "3.6"
 services:
   reserve_app:
     environment:
-      - MONGO_URI=${RESERVE_APP_MONGO_URI}
+      - APP_MONGO_USER=${APP_RESERVE_MONGO_USER}
+      - APP_MONGO_PASS=${APP_RESERVE_MONGO_PASS}
+      - MONGO_PORT=${RESERVE_MONGO_PORT}
+      - MONGO_DB=${APP_RESERVE_MONGO_DB}
     build:
       context: ./backend/reserve/app
       dockerfile: build/dev/Dockerfile
     volumes:
       - ./backend/reserve/app/src/:/home/node/app
     ports:
-      - 3457:4000
+      - 3457:3000
     depends_on:
       - reserve_mongo
     networks:
