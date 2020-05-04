@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { ReservesModel } from './models/reserves.model';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { ReservesModel } from "./models/reserves.model";
 
 @Injectable()
 export class ReservesService {
   constructor(
-    @InjectModel('Reserves') private readonly model: Model<ReservesModel>,
+    @InjectModel("Reserves") private readonly model: Model<ReservesModel>
   ) {}
 
   async create(model: ReservesModel): Promise<ReservesModel> {
@@ -28,16 +28,22 @@ export class ReservesService {
 
   async update(id: string, model: ReservesModel): Promise<ReservesModel> {
     const cultureUpdate = await this.model.findOne({ _id: id }).exec();
-    // const { nome, coordenadas, irrigacao } = model;
-    // if (nome) {
-    //   cultureUpdate.nome = nome;
-    // }
-    // if (coordenadas) {
-    //   cultureUpdate.coordenadas = coordenadas;
-    // }
-    // if (irrigacao) {
-    //   cultureUpdate.irrigacao = irrigacao;
-    // }
+    const { idResources, idUser, idSubject, timeStart, timeClose } = model;
+    if (idResources) {
+      cultureUpdate.idResources = idResources;
+    }
+    if (idUser) {
+      cultureUpdate.idUser = idUser;
+    }
+    if (idSubject) {
+      cultureUpdate.irrigacao = idSubject;
+    }
+    if (timeStart) {
+      cultureUpdate.irrigacao = timeStart;
+    }
+    if (timeClose) {
+      cultureUpdate.irrigacao = timeClose;
+    }
 
     return await cultureUpdate.save();
   }
