@@ -11,10 +11,10 @@ exports.default = {
         db_url: `mongodb://${mongodata.username}:${mongodata.password}@reserve_mongo:${mongodata.port}/${mongodata.dbname}`,
     },
     homolog: {
-        db_url: process.env.MONGO_URI,
+        db_url: `mongodb://${mongodata.username}:${mongodata.password}@reserve_mongo:${mongodata.port}/${mongodata.dbname}`,
     },
     prod: {
-        db_url: "",
+        db_url: `mongodb://${mongodata.username}:${mongodata.password}@reserve_mongo:${mongodata.port}/${mongodata.dbname}`,
     },
 };
 //# sourceMappingURL=config.js.map
