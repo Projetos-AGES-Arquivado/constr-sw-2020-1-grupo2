@@ -7,6 +7,7 @@ import {
   Param,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ReservesService } from './reserves.service';
 import { ReservesModel } from './models/reserves.model';
@@ -20,7 +21,6 @@ export class ReservesController {
     const model: ReservesModel = body;
     try {
       if (!model) {
-        console.log(body);
         return res.status(400).json({ message: 'Reserva inválida!' });
       }
 
@@ -37,6 +37,73 @@ export class ReservesController {
   async findAll(@Res() res): Promise<ReservesModel[]> {
     try {
       const reserves = await this.service.findAll();
+      return res.status(200).json(reserves);
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ message: 'Ops! Ocorreu um erro ao buscar as reservas', error });
+    }
+  }
+
+  /**
+   * @param id \string user id
+   * @query timeOpen \Date? data de abertura da reserva
+   * @query timeClose \Date? data de fechamento da reserva
+   */
+  @Get('user/:id')
+  async findByUserID(@Param() params, @Query() query, @Res() res): Promise<ReservesModel[]> {
+    const isValidDate = function isValidDate(d:Date) {
+      return d instanceof Date && !isNaN(+d);
+    }
+    try {
+      let timeOpen = 'timeOpen' in query ? new Date(query.timeOpen) : null;
+      let timeClose = 'timeClose' in query ? new Date(query.timeClose) : null;
+
+      if ('timeOpen' in query && !isValidDate(timeOpen))
+        throw "Data de início inválida";
+      
+      if ('timeClose' in query && !isValidDate(timeClose))
+        throw "Data de término inválida";
+      
+      if (isValidDate(timeOpen) && isValidDate(timeClose)) {
+        const reserves = await this.service.findByUserBetweenDates(params.id, query.timeOpen, query.timeClose);
+        return res.status(200).json(reserves);
+      }
+
+      const reserves = await this.service.findByUserId(params.id, query.timeOpen);
+      return res.status(200).json(reserves);
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ message: 'Ops! Ocorreu um erro ao buscar as reservas', error });
+    }
+  }
+
+  /**
+   * @query type \string (timeOpen or timeClose)
+   * @query min \Date data de limite inferior da busca
+   * @query max \Date data de limite superior da busca
+   */
+  @Get('/period')
+  async findByPeriod(@Query() query, @Res() res): Promise<ReservesModel[]> {
+    const isValidDate = function isValidDate(d:Date) {
+      return d instanceof Date && !isNaN(+d);
+    }
+    try {
+      let type = 'type' in query ? query.type : null;
+      let min = 'min' in query ? new Date(query.min) : null;
+      let max = 'max' in query ? new Date(query.max) : null;
+      
+      if (!type || (type != "timeOpen" && type != "timeClose"))
+        throw "Type é obrigatório e deve ser ou timeOpen ou timeClose";
+
+      if (!min || !isValidDate(min))
+        throw "Data mínima inválida";
+      
+      if (!max || !isValidDate(max))
+        throw "Data máxima inválida";
+
+      const reserves = await this.service.findByPeriod(type, query.min, query.max);
       return res.status(200).json(reserves);
     } catch (error) {
       return res

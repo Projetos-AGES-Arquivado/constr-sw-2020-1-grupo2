@@ -7,6 +7,7 @@ services:
       - APP_MONGO_PASS=${APP_RESERVE_MONGO_PASS}
       - MONGO_PORT=${RESERVE_MONGO_PORT}
       - MONGO_DB=${APP_RESERVE_MONGO_DB}
+      - NODE_ENV=${APP_RESERVE_NODE_ENV}
     build:
       context: ./backend/reserve/app
       dockerfile: build/dev/Dockerfile

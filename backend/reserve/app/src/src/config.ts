@@ -8,7 +8,7 @@ const mongodata = {
 
 export default {
   development: {
-    db_url: `mongodb://${mongodata.username}:${mongodata.password}@reserve_mongo:${mongodata.port}/${mongodata.dbname}`,
+    db_url: `mongodb://${mongodata.username}:${mongodata.password}@localhost:${mongodata.port}/${mongodata.dbname}`,
   },
   homolog: {
     db_url: `mongodb://${mongodata.username}:${mongodata.password}@reserve_mongo:${mongodata.port}/${mongodata.dbname}`,
