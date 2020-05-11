@@ -8,6 +8,7 @@ import {
   Put,
   Delete,
   Query,
+  Patch,
 } from "@nestjs/common";
 import { ReservesService } from "./reserves.service";
 import { ReservesModel } from "./models/reserves.model";
@@ -178,6 +179,38 @@ export class ReservesController {
   @Put(":id")
   @ApiBody({ description: "Criação da reserva", type: Reserves })
   async update(
+    @Param("id") id: string,
+    @Res() res,
+    @Body() body
+  ): Promise<ReservesModel> {
+    const model: ReservesModel = body;
+    const isValidDate = function isValidDate(d: Date) {
+      return d instanceof Date && !isNaN(+d);
+    };
+    try {
+      let timeOpen = "timeOpen" in body ? new Date(body.timeOpen) : null;
+      let timeClose = "timeClose" in body ? new Date(body.timeClose) : null;
+
+      if ("timeOpen" in body && !isValidDate(timeOpen))
+        throw "Data de início inválida";
+
+      if ("timeClose" in body && !isValidDate(timeClose))
+        throw "Data de término inválida";
+
+      const reservas = await this.service.update(id, model);
+      return res.status(200).json({ message: "Alterado com sucesso!" });
+    } catch (error) {
+      return res.status(400).json({
+        message: "Ops! Ocorreu um erro ao alterar as reservas",
+        error,
+      });
+    }
+  }
+
+  @ApiParam({ name: "id", type: "" })
+  @Patch(":id")
+  @ApiBody({ description: "Alteração da reserva", type: Reserves })
+  async patch(
     @Param("id") id: string,
     @Res() res,
     @Body() body
