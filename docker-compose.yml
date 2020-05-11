@@ -1,17 +1,20 @@
 version: "3.6"
 
 services:
-
   reserve_app:
-    environment: 
-      - MONGO_URI=${RESERVE_APP_MONGO_URI}
+    environment:
+      - APP_MONGO_USER=${APP_RESERVE_MONGO_USER}
+      - APP_MONGO_PASS=${APP_RESERVE_MONGO_PASS}
+      - MONGO_PORT=${RESERVE_MONGO_PORT}
+      - MONGO_DB=${APP_RESERVE_MONGO_DB}
+      - NODE_ENV=${APP_RESERVE_NODE_ENV}
     build:
       context: ./backend/reserve/app
       dockerfile: build/dev/Dockerfile
     volumes:
       - ./backend/reserve/app/src/:/home/node/app
     ports:
-      - 3457:4000
+      - 3457:3000
     depends_on:
       - reserve_mongo
     networks:
@@ -37,53 +40,51 @@ services:
     networks:
       - constrsw
 
-  auth:
-    build:
-      context: ./backend/auth
-      dockerfile: build/dev/Dockerfile
-    volumes:
-        - ./backend/auth/src/:/home/node/app
-    ports:
-      - 3456:3456
-    networks:
-      - constrsw
-    depends_on:
-      - keycloak
-
-  keycloak:
-    environment:
-      - DB_VENDOR=${DB_KEYCLOAK_VENDOR}
-      - DB_ADDR=postgres
-      - DB_PORT=5432
-      - DB_DATABASE=${DB_KEYCLOAK_DATABASE}
-      - DB_USER=${DB_KEYCLOAK_USER}
-      - DB_PASSWORD=${DB_KEYCLOAK_PASSWORD}
-      - KEYCLOAK_USER=${KEYCLOAK_USER}
-      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
-    build: ./backend/keycloak/build/dev
-    ports:
-      - 8080:8080
-    networks:
-      - constrsw
-    depends_on:
-      - postgres
-
-  postgres:
-    environment:
-      - POSTGRES_FIX_OWNERSHIP=1
-      - POSTGRES_DB=${DB_POSTGRES_DATABASE}
-      - POSTGRES_USER=${DB_POSTGRES_USERNAME}
-      - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
-      - DB_KEYCLOAK_DATABASE=${DB_KEYCLOAK_DATABASE}
-      - DB_KEYCLOAK_USER=${DB_KEYCLOAK_USER}
-      - DB_KEYCLOAK_PASSWORD=${DB_KEYCLOAK_PASSWORD}
-    build: ./backend/postgres
-    ports:
-      - ${DB_POSTGRES_PORT}:5432
-    volumes:
-      - constrsw-pgdata:${DB_POSTGRES_DATA}:rw
-    networks:
-      - constrsw
+  # auth:
+  #   build:
+  #     context: ./backend/auth
+  #     dockerfile: build/dev/Dockerfile
+  #   volumes:
+  #       - ./backend/auth/src/:/home/node/app
+  #   ports:
+  #     - 3456:3456
+  #   networks:
+  #     - constrsw
+  #   depends_on:
+  #     - keycloak
+  # keycloak:
+  #   environment:
+  #     - DB_VENDOR=${DB_KEYCLOAK_VENDOR}
+  #     - DB_ADDR=postgres
+  #     - DB_PORT=5432
+  #     - DB_DATABASE=${DB_KEYCLOAK_DATABASE}
+  #     - DB_USER=${DB_KEYCLOAK_USER}
+  #     - DB_PASSWORD=${DB_KEYCLOAK_PASSWORD}
+  #     - KEYCLOAK_USER=${KEYCLOAK_USER}
+  #     - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+  #   build: ./backend/keycloak/build/dev
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - constrsw
+  #   depends_on:
+  #     - postgres
+  # postgres:
+  #   environment:
+  #     - POSTGRES_FIX_OWNERSHIP=1
+  #     - POSTGRES_DB=${DB_POSTGRES_DATABASE}
+  #     - POSTGRES_USER=${DB_POSTGRES_USERNAME}
+  #     - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
+  #     - DB_KEYCLOAK_DATABASE=${DB_KEYCLOAK_DATABASE}
+  #     - DB_KEYCLOAK_USER=${DB_KEYCLOAK_USER}
+  #     - DB_KEYCLOAK_PASSWORD=${DB_KEYCLOAK_PASSWORD}
+  #   build: ./backend/postgres
+  #   ports:
+  #     - ${DB_POSTGRES_PORT}:5432
+  #   volumes:
+  #     - constrsw-pgdata:${DB_POSTGRES_DATA}:rw
+  #   networks:
+  #     - constrsw
 
 volumes:
   constrsw-pgdata:

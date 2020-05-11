@@ -12,3 +12,5 @@
 **/vendor
 
 *.DS_Store
+
+*/reserve/app/src/dist*
