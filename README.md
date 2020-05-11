@@ -34,6 +34,30 @@ $ cd opt/jboss/keycloak/bin
 
 $ ./kcadm.sh update realms/newrealm -s sslRequired=NONE
 ```
+
+#### Arquivo Swagger
+
+[swagger.yaml](uploads/0d22917a6147b59437809f691f2768ed/swagger.yaml)
+
 #### Modelagem do CRUD de Reservas
 
-<img src="backend/reserve/Images/ReserveDiagram.png" width="450">
+<img src="backend/reserve/Modeling/ReserveDiagram.png" width="450">
+
+### Frameworks utilizados
+
+#### Nest
+Nest é um framework tipado que combina elementos de programação orientada a objetos, programaçao funcional, e programação reativa. Ele é utilizado em cima do express, tem possiblidade de ser trabalhado com typescript, e é bom para construir CRUD.
+
+#### MongoDB e Mongoose
+
+Utilizamos MongoDB, e como complemento escolhermos usar o Mongoose, que é uma biblioteca que faz a relação do banco de dados com a aplicação desenvolvida.
+
+#### Swagger
+
+O Swagger é uma biblioteca para realizar a documentação das rotas da aplicação.
+
+<img src="backend/reserve/Modeling/SwaggerRoutes.jpeg" width="800">
+
+As rotas podem ser encontradas em:
+
+http://localhost:3457/api/
