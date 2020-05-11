@@ -34,6 +34,9 @@ $ cd opt/jboss/keycloak/bin
 
 $ ./kcadm.sh update realms/newrealm -s sslRequired=NONE
 ```
+#### URL de acesso a Amazon:
+
+http://3.16.255.145:3457/api/
 
 #### Arquivo Swagger
 
