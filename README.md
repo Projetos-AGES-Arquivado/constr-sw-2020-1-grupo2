@@ -31,6 +31,8 @@ O Swagger é uma biblioteca para realizar a documentação das rotas da aplicaç
 - [ ] Implantar padrões levantados na aula do dia 13/05/2020
 	- Entraga para dia 20/05/2020
 
+## Deprecated
+
 ### Documentação da primeira entrega (Já removida do servidor)
 
 URL - Keycloak Amazon
