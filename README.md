@@ -1,39 +1,8 @@
 ## Construção de Software - Grupo 2
 
-URL - Keycloak Amazon
-http://3.16.255.145:8080/auth/
+Documentação em:
 
-Caso de teste
-POST - http://3.16.255.145:3456/login
-
-Body: 
-{
-	"login": "user",
-	"password": "Senha@123"
-}
-
-
-
-- Para fazer rodar essa joça sem ssl, rode o seguinte comando:
-```sh
-$ docker exec -it constr-sw-2020-1-grupo2_keycloak_1 bash
-
-$ cd opt/jboss/keycloak/bin
-
-$ ./kcadm.sh config credentials --server http://localhost:8080/auth 
---realm master --user usr-admin --password
-
-$ ./kcadm.sh update realms/master -s sslRequired=NONE
-```
-
-- Após configurar um novo realm, execute novamente o último comando citado acima.
-```sh
-$ docker exec -it constr-sw-2020-1-grupo2_keycloak_1 bash
-
-$ cd opt/jboss/keycloak/bin
-
-$ ./kcadm.sh update realms/newrealm -s sslRequired=NONE
-```
+http://3.16.255.145:3457/api/
 
 #### Arquivo Swagger
 
@@ -58,6 +27,46 @@ O Swagger é uma biblioteca para realizar a documentação das rotas da aplicaç
 
 <img src="backend/reserve/Modeling/SwaggerRoutes.jpeg" width="800">
 
+### To-do list
+- [ ] Implantar padrões levantados na aula do dia 13/05/2020
+	- Entraga para dia 20/05/2020
+
+### Documentação da primeira entrega (Já removida do servidor)
+
+URL - Keycloak Amazon
+http://3.16.255.145:8080/auth/
+
+Caso de teste
+POST - http://3.16.255.145:3456/login
+
+Body: 
+{
+	"login": "user",
+	"password": "Senha@123"
+}
+
 As rotas podem ser encontradas em:
 
-http://localhost:3457/api/
+http://3.16.255.145:3457/api/
+
+
+- Para fazer rodar essa joça sem ssl, rode o seguinte comando:
+```sh
+$ docker exec -it constr-sw-2020-1-grupo2_keycloak_1 bash
+
+$ cd opt/jboss/keycloak/bin
+
+$ ./kcadm.sh config credentials --server http://localhost:8080/auth 
+--realm master --user usr-admin --password
+
+$ ./kcadm.sh update realms/master -s sslRequired=NONE
+```
+
+- Após configurar um novo realm, execute novamente o último comando citado acima.
+```sh
+$ docker exec -it constr-sw-2020-1-grupo2_keycloak_1 bash
+
+$ cd opt/jboss/keycloak/bin
+
+$ ./kcadm.sh update realms/newrealm -s sslRequired=NONE
+```
