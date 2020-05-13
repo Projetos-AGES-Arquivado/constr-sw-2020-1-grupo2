@@ -27,7 +27,7 @@ O Swagger é uma biblioteca para realizar a documentação das rotas da aplicaç
 
 <img src="backend/reserve/Modeling/SwaggerRoutes.jpeg" width="800">
 
-### To-do list
+## ToDo list
 - [ ] Implantar padrões levantados na aula do dia 13/05/2020
 	- Entraga para dia 20/05/2020
 
