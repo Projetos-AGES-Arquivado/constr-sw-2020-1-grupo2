@@ -11,8 +11,6 @@ services:
     build:
       context: ./backend/reserve/app
       dockerfile: build/dev/Dockerfile
-    volumes:
-      - ./backend/reserve/app/src/:/home/node/app
     ports:
       - 3457:3000
     depends_on:
