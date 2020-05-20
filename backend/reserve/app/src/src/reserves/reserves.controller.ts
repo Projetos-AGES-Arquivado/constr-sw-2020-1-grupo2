@@ -15,7 +15,7 @@ import { ReservesModel } from "./models/reserves.model";
 import { ApiBody, ApiParam, ApiQuery } from "@nestjs/swagger";
 import { Reserves } from "./dto/reserves";
 
-@Controller("reserves")
+@Controller()
 export class ReservesController {
   constructor(private readonly service: ReservesService) {}
 

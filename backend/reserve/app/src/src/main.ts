@@ -4,6 +4,7 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('reserves');
 
   const options = new DocumentBuilder()
     .setTitle("API - Reserves")
@@ -13,7 +14,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup("api", app, document);
+  SwaggerModule.setup("reserves/api", app, document);
 
   await app.listen(3000);
 }
