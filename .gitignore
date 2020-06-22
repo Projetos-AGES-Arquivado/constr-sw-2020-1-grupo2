@@ -12,5 +12,6 @@
 **/vendor
 
 *.DS_Store
+*.hercilio
 
 */reserve/app/src/dist*
