@@ -2,7 +2,7 @@
 
 Documentação em:
 
-http://3.16.255.145:3457/api/
+http://3.16.255.145:3457/reserves/api/
 
 #### Arquivo Swagger
 
