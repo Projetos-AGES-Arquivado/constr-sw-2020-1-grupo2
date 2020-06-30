@@ -67,13 +67,13 @@ export class ReservesService {
       cultureUpdate.idUser = idUser;
     }
     if (idSubject) {
-      cultureUpdate.irrigacao = idSubject;
+      cultureUpdate.idSubject = idSubject;
     }
     if (timeOpen) {
-      cultureUpdate.irrigacao = timeOpen;
+      cultureUpdate.timeOpen = timeOpen;
     }
     if (timeClose) {
-      cultureUpdate.irrigacao = timeClose;
+      cultureUpdate.timeClose = timeClose;
     }
 
     return await cultureUpdate.save();

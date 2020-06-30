@@ -17,19 +17,28 @@ import { Reserves } from "./dto/reserves";
 
 @Controller()
 export class ReservesController {
-  constructor(private readonly service: ReservesService) {}
+  constructor(private readonly service: ReservesService) { }
 
   @ApiBody({ description: "Criação da reserva", type: Reserves })
   @Post()
   async create(@Body() body, @Res() res) {
+
+    body.timeOpen = Helper.parseDate(body.timeOpen);
+    body.timeClose = Helper.parseDate(body.timeClose);
+
     const model: ReservesModel = body;
+
     try {
       if (!model) {
         return res.status(400).json({ message: "Reserva inválida!" });
       }
 
       const reserves = await this.service.create(model);
-      return res.status(201).json(reserves);
+      let newreserves = JSON.parse(JSON.stringify(reserves));
+      newreserves.timeOpen = Helper.formatDate(reserves.timeOpen);
+      newreserves.timeClose = Helper.formatDate(reserves.timeClose);
+
+      return res.status(201).json(newreserves);
     } catch (error) {
       return res
         .status(400)
@@ -41,7 +50,14 @@ export class ReservesController {
   async findAll(@Res() res): Promise<ReservesModel[]> {
     try {
       const reserves = await this.service.findAll();
-      return res.status(200).json(reserves);
+      let newreserves = JSON.parse(JSON.stringify(reserves));
+
+      newreserves.map((reserve, index) => {
+        reserve.timeOpen = Helper.formatDate(reserves[index].timeOpen);
+        reserve.timeClose = Helper.formatDate(reserves[index].timeClose);
+      });
+
+      return res.status(200).json(newreserves);
     } catch (error) {
       return res
         .status(400)
@@ -74,33 +90,41 @@ export class ReservesController {
     @Query() query,
     @Res() res
   ): Promise<ReservesModel[]> {
-    const isValidDate = function isValidDate(d: Date) {
-      return d instanceof Date && !isNaN(+d);
-    };
+
     try {
       let timeOpen = "timeOpen" in query ? new Date(query.timeOpen) : null;
       let timeClose = "timeClose" in query ? new Date(query.timeClose) : null;
 
-      if ("timeOpen" in query && !isValidDate(timeOpen))
+      if ("timeOpen" in query && !Helper.isValidDate(timeOpen))
         throw "Data de início inválida";
 
-      if ("timeClose" in query && !isValidDate(timeClose))
+      if ("timeClose" in query && !Helper.isValidDate(timeClose))
         throw "Data de término inválida";
 
-      if (isValidDate(timeOpen) && isValidDate(timeClose)) {
+      if (Helper.isValidDate(timeOpen) && Helper.isValidDate(timeClose)) {
         const reserves = await this.service.findByUserBetweenDates(
           params.id,
           query.timeOpen,
           query.timeClose
         );
-        return res.status(200).json(reserves);
+
+        let newreserves = JSON.parse(JSON.stringify(reserves));
+        newreserves.map((reserve, index) => {
+          reserve.timeOpen = Helper.formatDate(reserves[index].timeOpen);
+          reserve.timeClose = Helper.formatDate(reserves[index].timeClose);
+        });
+        return res.status(200).json(newreserves);
       }
 
       const reserves = await this.service.findByUserId(
         params.id,
         query.timeOpen
       );
-      return res.status(200).json(reserves);
+      let newreserves = JSON.parse(JSON.stringify(reserves));
+      newreserves.map((reserve, index) => {
+        reserve.timeOpen = Helper.formatDate(reserves[index].timeOpen);
+      });
+      return res.status(200).json(newreserves);
     } catch (error) {
       return res
         .status(400)
@@ -134,9 +158,6 @@ export class ReservesController {
   })
   @Get("/period")
   async findByPeriod(@Query() query, @Res() res): Promise<ReservesModel[]> {
-    const isValidDate = function isValidDate(d: Date) {
-      return d instanceof Date && !isNaN(+d);
-    };
     try {
       let type = "type" in query ? query.type : null;
       let min = "min" in query ? new Date(query.min) : null;
@@ -145,16 +166,21 @@ export class ReservesController {
       if (!type || (type != "timeOpen" && type != "timeClose"))
         throw "Type é obrigatório e deve ser ou timeOpen ou timeClose";
 
-      if (!min || !isValidDate(min)) throw "Data mínima inválida";
+      if (!min || !Helper.isValidDate(min)) throw "Data mínima inválida";
 
-      if (!max || !isValidDate(max)) throw "Data máxima inválida";
+      if (!max || !Helper.isValidDate(max)) throw "Data máxima inválida";
 
       const reserves = await this.service.findByPeriod(
         type,
         query.min,
         query.max
       );
-      return res.status(200).json(reserves);
+      let newreserves = JSON.parse(JSON.stringify(reserves));
+      newreserves.map((reserve, index) => {
+        reserve.timeOpen = Helper.formatDate(reserves[index].timeOpen);
+        reserve.timeClose = Helper.formatDate(reserves[index].timeClose);
+      });
+      return res.status(200).json(newreserves);
     } catch (error) {
       return res
         .status(400)
@@ -167,7 +193,10 @@ export class ReservesController {
   async findByID(@Param() params, @Res() res): Promise<ReservesModel[]> {
     try {
       const reserves = await this.service.findById(params.id);
-      return res.status(200).json(reserves);
+      let newreserves = JSON.parse(JSON.stringify(reserves));
+      newreserves.timeOpen = Helper.formatDate(reserves.timeOpen);
+      newreserves.timeClose = Helper.formatDate(reserves.timeClose);
+      return res.status(200).json(newreserves);
     } catch (error) {
       return res
         .status(400)
@@ -183,22 +212,28 @@ export class ReservesController {
     @Res() res,
     @Body() body
   ): Promise<ReservesModel> {
-    const model: ReservesModel = body;
-    const isValidDate = function isValidDate(d: Date) {
-      return d instanceof Date && !isNaN(+d);
-    };
     try {
+
+      body.timeOpen = Helper.parseDate(body.timeOpen);
+      body.timeClose = Helper.parseDate(body.timeClose);
+
       let timeOpen = "timeOpen" in body ? new Date(body.timeOpen) : null;
       let timeClose = "timeClose" in body ? new Date(body.timeClose) : null;
 
-      if ("timeOpen" in body && !isValidDate(timeOpen))
+      if ("timeOpen" in body && !Helper.isValidDate(timeOpen))
         throw "Data de início inválida";
 
-      if ("timeClose" in body && !isValidDate(timeClose))
+      if ("timeClose" in body && !Helper.isValidDate(timeClose))
         throw "Data de término inválida";
 
+      const model: ReservesModel = body;
       const reservas = await this.service.update(id, model);
-      return res.status(200).json({ message: "Alterado com sucesso!" });
+
+      let newreserves = JSON.parse(JSON.stringify(reservas));
+      newreserves.timeOpen = Helper.formatDate(reservas.timeOpen);
+      newreserves.timeClose = Helper.formatDate(reservas.timeClose);
+
+      return res.status(200).json(newreserves);
     } catch (error) {
       return res.status(400).json({
         message: "Ops! Ocorreu um erro ao alterar as reservas",
@@ -215,22 +250,29 @@ export class ReservesController {
     @Res() res,
     @Body() body
   ): Promise<ReservesModel> {
-    const model: ReservesModel = body;
-    const isValidDate = function isValidDate(d: Date) {
-      return d instanceof Date && !isNaN(+d);
-    };
     try {
+
+      body.timeOpen = Helper.parseDate(body.timeOpen);
+      body.timeClose = Helper.parseDate(body.timeClose);
+
       let timeOpen = "timeOpen" in body ? new Date(body.timeOpen) : null;
       let timeClose = "timeClose" in body ? new Date(body.timeClose) : null;
 
-      if ("timeOpen" in body && !isValidDate(timeOpen))
+      if ("timeOpen" in body && !Helper.isValidDate(timeOpen))
         throw "Data de início inválida";
 
-      if ("timeClose" in body && !isValidDate(timeClose))
+      if ("timeClose" in body && !Helper.isValidDate(timeClose))
         throw "Data de término inválida";
 
+      const model: ReservesModel = body;
+
       const reservas = await this.service.update(id, model);
-      return res.status(200).json({ message: "Alterado com sucesso!" });
+
+      let newreserves = JSON.parse(JSON.stringify(reservas));
+      newreserves.timeOpen = Helper.formatDate(reservas.timeOpen);
+      newreserves.timeClose = Helper.formatDate(reservas.timeClose);
+
+      return res.status(200).json(newreserves);
     } catch (error) {
       return res.status(400).json({
         message: "Ops! Ocorreu um erro ao alterar as reservas",
@@ -251,4 +293,31 @@ export class ReservesController {
         .json({ message: "Ops! Ocorreu um erro ao buscar as reservas", error });
     }
   }
+}
+
+class Helper {
+
+  static parseDate = function (input) {
+    var parts = input.match(/(\d+)/g);
+    const newdate = new Date(parts[2], parts[1] - 1, parts[0], parts[3], parts[4], parts[5]);
+    if (this.isValidDate(newdate)) {
+      return newdate;
+    }
+    return input;
+  };
+
+  static formatDate = function (date: Date) {
+    const options = {
+      year: 'numeric', month: 'numeric', day: 'numeric',
+      hour: 'numeric', minute: 'numeric', second: 'numeric',
+      hour12: false,
+      timeZone: 'America/Sao_Paulo'
+    };
+    return new Intl.DateTimeFormat('pt-br', options).format(date);
+  }
+
+  static isValidDate = function isValidDate(d: Date) {
+    return d instanceof Date && !isNaN(+d);
+  };
+
 }
