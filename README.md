@@ -2,7 +2,7 @@
 
 Documentação em:
 
-http://3.16.255.145:3457/reserves/api/
+http://3.17.142.4:3457/reserves/api/
 
 #### Arquivo Swagger
 
@@ -32,10 +32,10 @@ O Swagger é uma biblioteca para realizar a documentação das rotas da aplicaç
 ### Documentação da primeira entrega (Já removida do servidor)
 
 URL - Keycloak Amazon
-http://3.16.255.145:8080/auth/
+http://3.17.142.4:8080/auth/
 
 Caso de teste
-POST - http://3.16.255.145:3456/login
+POST - http://3.17.142.4:3456/login
 
 Body: 
 {
@@ -45,7 +45,7 @@ Body:
 
 As rotas podem ser encontradas em:
 
-http://3.16.255.145:3457/api/
+http://3.17.142.4:3457/api/
 
 
 - Para fazer rodar essa joça sem ssl, rode o seguinte comando:
